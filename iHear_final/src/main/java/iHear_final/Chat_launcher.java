@@ -146,10 +146,151 @@ public class Chat_launcher extends javax.swing.JFrame {
 
     private void textFieldPwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPwdActionPerformed
         // TODO add your handling code here:
+        seConnecter();
     }//GEN-LAST:event_textFieldPwdActionPerformed
+
+    private boolean startConnection(String adresse){
+        /* Code relatif à la connexion à la base de données */
+        /* Chargement du driver JDBC pour MySQL */
+        String urlBDD = "jdbc:mysql://" + adresse + ":3306/projet_java";
+        String user = "root";
+        String password = "";
+        c = null;
+
+        try {
+            Class.forName( "com.mysql.jdbc.Driver" );
+        } catch ( ClassNotFoundException e ) {
+            /* Gérer les éventuelles erreurs ici. */
+            //System.exit(0); /* Penser à l'affichage d'une erreur */
+            System.out.println("ERREUR SGBD");
+            return false; /*On divulge la non connexion*/
+        }
+
+        try{
+            c = DriverManager.getConnection(urlBDD, user, password);
+            /* requete ici*/
+
+            System.out.println("Connection OK.");
+        } catch ( SQLException e ) {
+            /* Gérer les éventuelles erreurs ici */
+            System.out.println(e);
+            return false;
+        } 
+        
+        return true; /* On confirme la connexion */
+    }
+    
+    private void endConnection(){
+        if ( c != null )
+            try {
+            /* Fermeture de la connexion */
+                System.out.println("Connection KO.");
+                c.close();
+                c = null;
+            } catch ( SQLException ignore ) {
+            /* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
+
+            }
+        
+    }
+    
+    private boolean cmpString(String cmp, String cmp2){
+        boolean retour = true;
+        
+        if(cmp.length() != cmp2.length())
+            retour = false;
+
+        if(retour)
+            for(int i = 0; i < cmp.length(); i++){
+                if(cmp.charAt(i) != cmp2.charAt(i)){
+                    retour = false;
+                }
+            }
+        
+        return retour;
+    }
+    
+    private void setUserOnline(int idUser, boolean arg){
+        Statement s = null;
+        int r = 0;
+        
+        /* Préparation des variables */
+        try {
+            s = c.createStatement();
+            r = s.executeUpdate("UPDATE UTILISATEURS SET estConnecte="+ arg +" WHERE idUser = '" + idUser + "'");
+            
+        } catch ( SQLException e ) {
+            System.out.println("funtion creerUtilisateur() " + e);
+        } 
+    }
+    
+    private void seConnecter(){
+        boolean pass = false;
+        String adr;
+        
+        /* Si il a renseigné tout les champs */
+        if(!textFieldAdr.getText().isEmpty() && !textFieldId.getText().isEmpty() && !textFieldPwd.getText().isEmpty()){
+            if(startConnection(textFieldAdr.getText())){
+                /* La connexion est établie, test des identifiants données */
+                adr = textFieldAdr.getText();
+                Statement s = null;
+                ResultSet r = null;
+                String cmp, cmp2;
+                int idUser = 0;
+                String typeProfil = null;
+                
+                try {
+                    s = c.createStatement();
+                    r = s.executeQuery("SELECT password, idUser, typeprofil FROM UTILISATEURS WHERE username like '" + textFieldId.getText() + "'"); /* On selectionne tout dans le salon */
+                    System.out.println("Requete lancée !");
+                    
+                    while(r.next()){
+                        cmp = String.valueOf(textFieldPwd.getPassword());
+                        cmp2 = r.getString("password"); /*On récupère le mot de passe*/
+                        idUser = r.getInt("idUser");    /*On récupère le mot de passe*/
+                        typeProfil = r.getString("typeprofil");   /*On récupère le type de profil */             
+                        
+                        System.out.println(cmp + " " + cmp2);
+                        if(cmpString(cmp, cmp2)){
+                            pass = true;
+                        }
+                    }
+                    
+                } catch ( SQLException e ) {
+                    System.out.println("funtion rafraichir() " + e);
+                } finally {
+                    if ( r != null ) { /* fermeture resultset */
+                        try {
+                            r.close();
+                        } catch ( SQLException ignore ) {
+                        }
+                    }
+                    if ( s != null ) { /* fermeture statement */
+                        try {
+                            s.close();
+                        } catch ( SQLException ignore ) {
+                        }
+                    }
+                }
+                
+                if(pass){
+                    if(cmpString(typeProfil, "user")){
+                        setUserOnline(idUser, true);
+                        new Chat_acteur(idUser, textFieldId.getText(), adr).setVisible(true); /*On donne les identifiants à la prochaine fenetre */
+                    }
+                    if(cmpString(typeProfil, "admin"))
+                        new Chat_admin(adr).setVisible(true); /*On donne les identifiants à la prochaine fenetre */
+
+                    this.setVisible(false);
+                }
+                
+            }
+        }
+    }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Si l'utilisateur appuie sur se connecter.
+        seConnecter();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void textFieldPwdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textFieldPwdMouseClicked
