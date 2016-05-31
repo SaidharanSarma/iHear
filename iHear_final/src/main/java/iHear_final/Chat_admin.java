@@ -34,9 +34,9 @@ public class Chat_admin extends javax.swing.JFrame {
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
-        String urlBDD = "jdbc:mysql://" + adresse + ":3306/projet_java";
-        String user = "root";
-        String password = "";
+        String urlBDD = "jdbc:mysql://"+ adresse +":3306/projet_java";
+        String user = "java_user";
+        String password = "123456";
         c = null;
 
         try {
