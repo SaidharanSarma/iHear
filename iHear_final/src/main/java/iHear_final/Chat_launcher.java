@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class Chat_launcher extends javax.swing.JFrame {
 
     /**
-     * Création d'une nouvelle fenetre du launcher.
+     * Creates new form Chat_launcher
      */
     public Chat_launcher() {
         initComponents();
@@ -149,16 +149,10 @@ public class Chat_launcher extends javax.swing.JFrame {
         seConnecter();
     }//GEN-LAST:event_textFieldPwdActionPerformed
 
-    /**
-     * Begin the connection between the program and the database.
-     * @param adresse : the adress where the database is.
-     * @return true if the connection is effective.
-     * else it returns false.
-     */
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
-        String urlBDD = "jdbc:mysql://" + adresse + ":3306/projet_java";
+        String urlBDD = "jdbc:mysql://localhost:3306/projet_java";
         String user = "root";
         String password = "";
         c = null;
@@ -168,7 +162,7 @@ public class Chat_launcher extends javax.swing.JFrame {
         } catch ( ClassNotFoundException e ) {
             /* Gérer les éventuelles erreurs ici. */
             //System.exit(0); /* Penser à l'affichage d'une erreur */
-            System.out.println("ERREUR SGBD");
+            System.out.println("Launcher : ERREUR SGBD");
             return false; /*On divulge la non connexion*/
         }
 
@@ -186,9 +180,6 @@ public class Chat_launcher extends javax.swing.JFrame {
         return true; /* On confirme la connexion */
     }
     
-    /**
-     * Disconnect the client.
-     */
     private void endConnection(){
         if ( c != null )
             try {
@@ -202,12 +193,7 @@ public class Chat_launcher extends javax.swing.JFrame {
             }
         
     }
-    /**
-     * Compares two string.
-     * @param cmp is the first string.
-     * @param cmp2 is the second string.
-     * @return true if the two string are the same.
-     */
+    
     private boolean cmpString(String cmp, String cmp2){
         boolean retour = true;
         
@@ -224,11 +210,6 @@ public class Chat_launcher extends javax.swing.JFrame {
         return retour;
     }
     
-    /**
-     * Update the database : the specified user is put online/offline.
-     * @param idUser : the id of the user.
-     * @param arg : 1-online, 0-offline. 
-     */
     private void setUserOnline(int idUser, boolean arg){
         Statement s = null;
         int r = 0;
@@ -243,10 +224,6 @@ public class Chat_launcher extends javax.swing.JFrame {
         } 
     }
     
-    /**
-     * Main function of the launcher. Take information from the database and if the user exists, launch the administration
-     * or the user window.
-     */
     private void seConnecter(){
         boolean pass = false;
         String adr;
