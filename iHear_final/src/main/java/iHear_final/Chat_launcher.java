@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class Chat_launcher extends javax.swing.JFrame {
 
     /**
-     * Creates new form Chat_launcher
+     * Création d'une nouvelle fenetre du launcher.
      */
     public Chat_launcher() {
         initComponents();
@@ -149,6 +149,12 @@ public class Chat_launcher extends javax.swing.JFrame {
         seConnecter();
     }//GEN-LAST:event_textFieldPwdActionPerformed
 
+    /**
+     * Begin the connection between the program and the database.
+     * @param adresse : the adress where the database is.
+     * @return true if the connection is effective.
+     * else it returns false.
+     */
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
@@ -180,6 +186,9 @@ public class Chat_launcher extends javax.swing.JFrame {
         return true; /* On confirme la connexion */
     }
     
+    /**
+     * Disconnect the client.
+     */
     private void endConnection(){
         if ( c != null )
             try {
@@ -193,7 +202,12 @@ public class Chat_launcher extends javax.swing.JFrame {
             }
         
     }
-    
+    /**
+     * Compares two string.
+     * @param cmp is the first string.
+     * @param cmp2 is the second string.
+     * @return true if the two string are the same.
+     */
     private boolean cmpString(String cmp, String cmp2){
         boolean retour = true;
         
@@ -210,6 +224,11 @@ public class Chat_launcher extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Update the database : the specified user is put online/offline.
+     * @param idUser : the id of the user.
+     * @param arg : 1-online, 0-offline. 
+     */
     private void setUserOnline(int idUser, boolean arg){
         Statement s = null;
         int r = 0;
@@ -224,6 +243,10 @@ public class Chat_launcher extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * Main function of the launcher. Take information from the database and if the user exists, launch the administration
+     * or the user window.
+     */
     private void seConnecter(){
         boolean pass = false;
         String adr;
@@ -322,7 +345,6 @@ public class Chat_launcher extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Chat_launcher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
