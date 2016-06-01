@@ -289,6 +289,11 @@ rafraichir();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Etablit une connexion avec la base de données située à l'adresse donnée.
+     * @param adresse
+     * @return VRAI si la connexion est établie, FAUX sinon.
+     */
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
@@ -320,6 +325,9 @@ rafraichir();
         return true; /* On confirme la connexion */
     }
     
+    /**
+     * Termine la connexion en cours.
+     */
     private void endConnection(){
         if ( c != null )
             try {
@@ -334,6 +342,11 @@ rafraichir();
         
     }
     
+    /**
+     * Permet de mettre l'utilisateur en ligne/hors ligne.
+     * @param idUser : id de l'utilisateur à mettre à jour.
+     * @param arg : TRUE - en ligne, FALSE - hors ligne.
+     */
     private void setUserOnline(int idUser, boolean arg){
         Statement s = null;
         int r = 0;
@@ -348,6 +361,9 @@ rafraichir();
         } 
     }
     
+    /**
+     * Ajoute graphique un onglet.
+     */
     private void addScroll() {
                 
         javax.swing.JTextArea j = new javax.swing.JTextArea(); /* Création du contenu */
@@ -365,6 +381,9 @@ rafraichir();
         jTabbedPane6.addTab("Room" + indexOnglet, onglet.get(indexOnglet)); /* On nomme la fenetre et on l'ajoute au jTabbedPane */
     }
     
+    /**
+     * Supprime un onglet.
+     */
     private void deleteScroll(){
         if(indexOnglet > -1){ /* Controle de la position de l'index */
             onglet.remove(indexOnglet); /* On enleve l'onglet de l'Array List */
@@ -374,12 +393,20 @@ rafraichir();
         }
     }
     
+    /**
+     * Envoie le LocalMessage à l'affichage.
+     * @param m : local message à envoyer.
+     */
     private void envoyer(LocalMessage m){
         if(!m.getText().isEmpty()){ /* Si le message n'est pas vide */
             contenuOnglet.get(jTabbedPane6.getSelectedIndex()).setText(contenuOnglet.get(jTabbedPane6.getSelectedIndex()).getText() + "\n" + "(" + m.getTime() + ") " + m.getAuthor() + " : " + m.getText());
         }
     }
     
+    /**
+     * Envoie le LocalMessage à la base de données.
+     * @param m : local message à envoyer.
+     */
     private void envoyer(){
         /* Création et affichage du message local */
         /* Si le texte que l'utilisateur n'est pas vide, on envoie */
@@ -431,6 +458,9 @@ rafraichir();
         }
     }
     
+    /**
+     * Cacher la zone de texte.
+     */
     private void cacherSaisie(){
         Statement s = null;
         ResultSet r = null;
@@ -465,6 +495,11 @@ rafraichir();
         }
     }
     
+    /**
+     * Permet d'afficher les utilisateurs rédacteurs du salon
+     * dans la case qui leur correspond : connecté ou absent.
+     * @param uConnect : arraylist contenant le pseudo des utilisateurs rédacteurs.
+     */
     private void grAfficherConnecte(ArrayList<Integer> uConnect){
         Statement s = null;
         ResultSet r = null;
@@ -503,6 +538,11 @@ rafraichir();
         }
     }
    
+    /**
+     * Permet d'afficher les utilisateurs spectateurs du salon
+     * dans la case qui leur correspond : connecté ou absent.
+     * @param uSpectator : arraylist contenant le pseudo des utilisateurs spectateurs.
+     */
     private void grAfficherSpectateur(ArrayList<Integer> uSpectator){
         Statement s = null;
         ResultSet r = null;
@@ -541,6 +581,9 @@ rafraichir();
         }
     }
     
+    /**
+     * Affiche les utilisateurs spectateurs ou rédacteurs du salon actuel.
+     */
     private void afficherConnecte(){
         Statement s = null;
         ResultSet r = null;
@@ -588,6 +631,9 @@ rafraichir();
         grAfficherSpectateur(uSpectator);
     }
     
+    /**
+     * Met à jour le contenu du salon actuel.
+     */
     private void rafraichirSalon(){
         /* Création de l'objet gérant les requêtes MySQL */
         Statement s = null;
@@ -635,6 +681,9 @@ rafraichir();
         afficherConnecte();
     }
     
+    /**
+     * Met à jour les salons au niveau des onglets.
+     */
     private void rafraichir(){
         /* On tire depuis la base de donnée */
         /* On peut commencer un statement si la connexion est ouverte */
@@ -708,7 +757,12 @@ rafraichir();
         
     }
     
-    private void setUserInvisible(int idUser, boolean arg){
+    /**
+     * Met l'utilisateur en "Connecté" ou "Absent"
+     * @param idUser : id de l'utilisateur à modifier.
+     * @param arg : VRAI : connecté - FALSE : absent.
+     */
+    private void setUserVisible(int idUser, boolean arg){
         Statement s = null;
         int r = 0;
         
@@ -739,8 +793,6 @@ rafraichir();
             envoyer();
         }
     }//GEN-LAST:event_jTextFieldKeyPressed
-
-    /* Events */
     
     private void jTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldActionPerformed
         // TODO add your handling code here:
@@ -763,6 +815,9 @@ rafraichir();
         doRefresh();
     }//GEN-LAST:event_jPanel1MouseMoved
 
+    /**
+     * Paint le salon selon la couleur attribuée.
+     */
     private void paintRefresh(){
         /* Création de l'objet gérant les requêtes MySQL */
         Statement s = null;
@@ -821,12 +876,21 @@ rafraichir();
         }
     }
     
+    /** 
+     * Rafraichit le contenu de la conversation, la saisie et la couleur.
+     */
     private void doRefresh(){
         rafraichirSalon();
         cacherSaisie();
         paintRefresh();
     }
     
+    /**
+     * Protège un char dans un string par un \.
+     * @param toProtect : le char à protéger.
+     * @param data : le string à modifier.
+     * @return le string modifié.
+     */
     private String remplaceThisIn(char toProtect, String data){
         String retour = "";
         
@@ -842,6 +906,12 @@ rafraichir();
         return retour;
     }
     
+    /**
+     * Compare deux string et retourne le résultat.
+     * @param cmp : premier string.
+     * @param cmp2 : second string.
+     * @return TRUE si ils sont égaux, FALSE sinon.
+     */
     private boolean cmpString(String cmp, String cmp2){
         boolean retour = true;
         
@@ -858,6 +928,11 @@ rafraichir();
         return retour;
     }
     
+    /**
+     * Récupère l'id d'un utilisateur depuis son pseudo.
+     * @param username : le pseudo en question.
+     * @return l'id de l'utilisateur.
+     */
     private int getIdUser(String username){
         Statement s = null;
         ResultSet r = null;
@@ -891,6 +966,11 @@ rafraichir();
         return retour;
     }
     
+    /**
+     * Vérifie la présence d'un utilisateur dans la base de données.
+     * @param pseudo : le pseudo à vérifier.
+     * @return TRUE si il existe, FALSE sinon.
+     */
     private boolean getPseudoByDatabase(String pseudo){
         Statement s = null;
         ResultSet r = null;
@@ -927,6 +1007,11 @@ rafraichir();
         return retour;
     }
     
+    /**
+     * Récupère l'id d'un salon grâce à l'intitulé.
+     * @param intitule : nom du salon.
+     * @return l'id en question.
+     */
     private int getIdSaloon(String intitule){
         Statement s = null;
         ResultSet r = null;
@@ -960,6 +1045,11 @@ rafraichir();
         return retour;
     }
     
+    /**
+     * Lie les utilisateurs à leur salon privé. 
+     * @param user1 : 1er utilisateur.
+     * @param user2 : 2nd utilisateur.
+     */
     private void ajouterLiens(String user1, String user2){
         Statement s = null;
         int r = 0;
@@ -999,6 +1089,11 @@ rafraichir();
         
     }
     
+    /**
+     * Créer un salon entre deux utilisateurs.
+     * @param user1 : 1er utilisateur. 
+     * @param user2 : 2nd utilisateur.
+     */
     private void creerSalon(String user1, String user2){
         Statement s = null;
         int r = 0;
@@ -1051,21 +1146,22 @@ rafraichir();
             creer = false;
         }
         else
-            jTextField1.setBackground(Color.red);
+            jTextField1.setBackground(Color.white);
         
         if(!getPseudoByDatabase(other)){
             jTextField1.setForeground(Color.red);
             creer = false;
         }
         else
-            jTextField1.setForeground(Color.red);
+            jTextField1.setForeground(Color.white);
         
         if(creer){
             creerSalon(nameUser, other);
             jTextField1.setText("");
             System.out.println("Création du salon !");
         }
-
+        
+        doRefresh();
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jTabbedPane6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane6MouseClicked
@@ -1075,7 +1171,7 @@ rafraichir();
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
-        setUserInvisible(idUser, !jToggleButton1.isSelected());
+        setUserVisible(idUser, jToggleButton1.isSelected());
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**

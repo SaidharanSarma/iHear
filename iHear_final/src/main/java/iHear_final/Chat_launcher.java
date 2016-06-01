@@ -149,6 +149,11 @@ public class Chat_launcher extends javax.swing.JFrame {
         seConnecter();
     }//GEN-LAST:event_textFieldPwdActionPerformed
 
+    /**
+     * Etablit une connexion avec la base de données située à l'adresse donnée.
+     * @param adresse
+     * @return VRAI si la connexion est établie, FAUX sinon.
+     */
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
@@ -180,6 +185,11 @@ public class Chat_launcher extends javax.swing.JFrame {
         return true; /* On confirme la connexion */
     }
     
+    /**
+     * Permet de mettre l'utilisateur en ligne/hors ligne.
+     * @param idUser : id de l'utilisateur à mettre à jour.
+     * @param arg : TRUE - en ligne, FALSE - hors ligne.
+     */
     private void endConnection(){
         if ( c != null )
             try {
@@ -194,6 +204,12 @@ public class Chat_launcher extends javax.swing.JFrame {
         
     }
     
+    /**
+     * Compare deux string et retourne le résultat.
+     * @param cmp : premier string.
+     * @param cmp2 : second string.
+     * @return TRUE si ils sont égaux, FALSE sinon.
+     */
     private boolean cmpString(String cmp, String cmp2){
         boolean retour = true;
         
@@ -210,6 +226,11 @@ public class Chat_launcher extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Permet de mettre l'utilisateur en ligne/hors ligne.
+     * @param idUser : id de l'utilisateur à mettre à jour.
+     * @param arg : TRUE - en ligne, FALSE - hors ligne.
+     */
     private void setUserOnline(int idUser, boolean arg){
         Statement s = null;
         int r = 0;
@@ -224,6 +245,9 @@ public class Chat_launcher extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * Démarre la fenetre correspondant au statut de l'utilisateur.
+     */
     private void seConnecter(){
         boolean pass = false;
         String adr;

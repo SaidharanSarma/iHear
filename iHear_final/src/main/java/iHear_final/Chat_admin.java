@@ -26,11 +26,20 @@ public class Chat_admin extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Créer une nouvelle fenêtre et met à jour la variable adresse.
+     * @param adr : adresse de la base de données.
+     */
     public Chat_admin(String adr) {
         adresse = adr;
         initComponents();
     }
     
+    /**
+     * Etablit une connexion avec la base de données située à l'adresse donnée.
+     * @param adresse
+     * @return VRAI si la connexion est établie, FAUX sinon.
+     */
     private boolean startConnection(String adresse){
         /* Code relatif à la connexion à la base de données */
         /* Chargement du driver JDBC pour MySQL */
@@ -62,6 +71,11 @@ public class Chat_admin extends javax.swing.JFrame {
         return true; /* On confirme la connexion */
     }
     
+    /**
+     * Permet de mettre l'utilisateur en ligne/hors ligne.
+     * @param idUser : id de l'utilisateur à mettre à jour.
+     * @param arg : TRUE - en ligne, FALSE - hors ligne.
+     */
     private void endConnection(){
         if ( c != null )
             try {
@@ -76,6 +90,12 @@ public class Chat_admin extends javax.swing.JFrame {
         
     }
     
+    /**
+     * Compare deux string et retourne le résultat.
+     * @param cmp : premier string.
+     * @param cmp2 : second string.
+     * @return TRUE si ils sont égaux, FALSE sinon.
+     */
     private boolean cmpString(String cmp, String cmp2){
         boolean retour = true;
         
@@ -92,7 +112,12 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
-    /* parcourt le string et remplace le caractère demandé */ 
+    /**
+     * Protège un char dans un string par un \.
+     * @param toProtect : le char à protéger.
+     * @param data : le string à modifier.
+     * @return le string modifié.
+     */
     private String remplaceThisIn(char toProtect, String data){
         String retour = "";
         
@@ -108,6 +133,11 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Vérifie la présence d'un utilisateur dans la base de données.
+     * @param pseudo : le pseudo à vérifier.
+     * @return TRUE si il existe, FALSE sinon.
+     */
     private boolean getPseudoByDatabase(String pseudo){
         Statement s = null;
         ResultSet r = null;
@@ -144,6 +174,11 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Récupère l'id d'un utilisateur depuis son pseudo.
+     * @param username : le pseudo en question.
+     * @return l'id de l'utilisateur.
+     */
     private int getIdUser(String username){
         Statement s = null;
         ResultSet r = null;
@@ -177,6 +212,12 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Vérifie la présence d'un utilisateur dans la base de données.
+     * @param intitule : l'intitule à vérifier.
+     * @return TRUE si il existe, FALSE sinon.
+     * @return 
+     */
     private boolean getSaloonByDatabase(String intitule){
         Statement s = null;
         ResultSet r = null;
@@ -213,6 +254,11 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Récupère l'id d'un salon grâce à l'intitulé.
+     * @param intitule : nom du salon.
+     * @return l'id en question.
+     */
     private int getIdSaloon(String intitule){
         Statement s = null;
         ResultSet r = null;
@@ -246,6 +292,12 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Vérifie si l'utilisateur a une relation avec le salon.
+     * @param salon : nom du salon.
+     * @param user : pseudonyme de l'utilisateur.
+     * @return TRUE si c'est vrai, FALSE sinon.
+     */
     private boolean isRelationBetween(String salon, String user){
         Statement s = null;
         ResultSet r = null;
@@ -279,6 +331,15 @@ public class Chat_admin extends javax.swing.JFrame {
         return retour;
     }
     
+    /**
+     * Créer un utilisateur dans la base de données avec les parametres données 
+     * @param pseudo : pseudo.
+     * @param pwd : mot de passe.
+     * @param nom : nom.
+     * @param prenom : prénom.
+     * @param admin : TRUE si l'utilisateur est une admin et FALSE sinon.
+     * @param description : description.
+     */
     private void creerUtilisateur(String pseudo, String pwd, String nom, String prenom, Boolean admin, String description){
         Statement s = null;
         int r = 0;
@@ -300,6 +361,14 @@ public class Chat_admin extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * Modifie un utilisateur dans la base de données selon les parametres données.
+     * @param pseudo
+     * @param pwd
+     * @param nom
+     * @param prenom
+     * @param description 
+     */
     private void modifierUtilisateur(String pseudo, String pwd, String nom, String prenom, String description){
         Statement s = null;
         int r = 0;
@@ -337,6 +406,12 @@ public class Chat_admin extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Créer un salon avec les données envoyé en argument.
+     * @param intitule
+     * @param couleur
+     * @param description 
+     */
     private void creerSalon(String intitule, String couleur, String description){
         Statement s = null;
         int r = 0;
@@ -368,6 +443,12 @@ public class Chat_admin extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * Modifie le salon selon les données envoyés en argument.
+     * @param intitule
+     * @param couleur
+     * @param description 
+     */
     private void modifierSalon(String intitule, String couleur, String description){
         Statement s = null;
         int r = 0;
@@ -395,6 +476,12 @@ public class Chat_admin extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Ajoute une relation entre un salon et un utilisateur avec le role donné.
+     * @param salon
+     * @param utilisateur
+     * @param role 
+     */
     private void ajouterRelation(String salon, String utilisateur, int role){
         Statement s = null;
         int r = 0;
@@ -411,6 +498,9 @@ public class Chat_admin extends javax.swing.JFrame {
         } 
     }
     
+    /**
+     * Retire une relation entre un salon et un utilisateur
+    */
     private void retirerRelation(String salon, String utilisateur){
         Statement s = null;
         int r = 0;
