@@ -1171,7 +1171,7 @@ rafraichir();
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
-        setUserVisible(idUser, jToggleButton1.isSelected());
+        setUserVisible(idUser, !jToggleButton1.isSelected());
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
