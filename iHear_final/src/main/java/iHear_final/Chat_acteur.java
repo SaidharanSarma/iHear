@@ -23,7 +23,8 @@ import javax.swing.Timer;
 
 /**
  *
- * @author SAI, Alexis
+ * @author iHear Team : FERRERA - GARCIA - GARDAVOIR - SARMA.
+ * Ver. 1.0.0 : 1 Juin 2016.
  */
 
 public class Chat_acteur extends javax.swing.JFrame {
@@ -35,6 +36,12 @@ public class Chat_acteur extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Démarre une fenetre d'utilisateur.
+     * @param id : id de l'utilisateur à connecter.
+     * @param name : nom de l'utilisateur à connecter.
+     * @param adr : adresse où connecter l'utilisateur.
+     */
     public Chat_acteur(int id, String name, String adr) {
         idUser = id;
         nameUser = name;
@@ -78,6 +85,7 @@ public class Chat_acteur extends javax.swing.JFrame {
         jTextArea15 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         jFrame1.setTitle("bouh");
         jFrame1.setAlwaysOnTop(true);
@@ -195,6 +203,13 @@ public class Chat_acteur extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setText("Invisible");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -210,17 +225,20 @@ public class Chat_acteur extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextField1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(jScrollPane15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)))
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -238,9 +256,11 @@ public class Chat_acteur extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToggleButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,7 +272,8 @@ public class Chat_acteur extends javax.swing.JFrame {
         );
 
         startConnection(adresse);
- rafraichir();
+rafraichir();
+rafraichir();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -687,6 +708,20 @@ public class Chat_acteur extends javax.swing.JFrame {
         
     }
     
+    private void setUserInvisible(int idUser, boolean arg){
+        Statement s = null;
+        int r = 0;
+        
+        /* Préparation des variables */
+        try {
+            s = c.createStatement();
+            r = s.executeUpdate("UPDATE UTILISATEURS SET estConnecte="+ arg +" WHERE idUser = '" + idUser + "'");
+            
+        } catch ( SQLException e ) {
+            System.out.println("funtion creerUtilisateur() " + e);
+        } 
+    }
+    
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         setUserOnline(idUser, false);
@@ -789,6 +824,7 @@ public class Chat_acteur extends javax.swing.JFrame {
     private void doRefresh(){
         rafraichirSalon();
         cacherSaisie();
+        paintRefresh();
     }
     
     private String remplaceThisIn(char toProtect, String data){
@@ -1037,6 +1073,11 @@ public class Chat_acteur extends javax.swing.JFrame {
         paintRefresh();
     }//GEN-LAST:event_jTabbedPane6MouseClicked
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        setUserInvisible(idUser, !jToggleButton1.isSelected());
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      * @throws java.sql.SQLException
@@ -1096,6 +1137,7 @@ public class Chat_acteur extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea15;
     private javax.swing.JTextField jTextField;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
    
     private ArrayList<JScrollPane> onglet = new ArrayList();
